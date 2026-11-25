@@ -5,6 +5,8 @@ from app.core.config import settings
 from app.db.database import init_db
 from app.api.routes import documents, resume, auth
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,6 +15,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["X-Resume-Id", "Content-Disposition"],
+)
 
 app.include_router(auth.router)
 app.include_router(documents.router)

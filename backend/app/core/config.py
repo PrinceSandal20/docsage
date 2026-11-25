@@ -14,5 +14,9 @@ class Settings:
 
     DB_CONNECTION: str = os.getenv("DB_CONNECTION", "")
 
+    CORS_ORIGINS: list[str] = [
+    o.strip()
+    for o in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+    ]
 
 settings = Settings()
